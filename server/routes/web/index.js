@@ -11,6 +11,21 @@ const writelogsql = require('../../Component/writelogsql');
 const consolelog = require('../../Component/consolelog');
 const SunArray = require('../../Component/SunArray');
 
+let config
+let haveRedisConfig = fs.existsSync(path.join(process.cwd(), '/config/Server_config.json'))
+if (haveRedisConfig) {
+    config = require(path.join(process.cwd(), '/config/Server_config.json'))
+    writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！`)
+} else {
+    consolelog(3, "服务配置文件丢失，请联系供应商解决!")
+    writelog("./log/SystemLog/SystemLog.log", 3, `服务配置文件丢失，请联系供应商解决！`)
+}
+
+const driver = config["Driver"];
+const codriver = config["Co-driver"]
+const backseat = config["backseat"]
+const leanback = config["Lean-back"]
+
 const router = express.Router();
 
 let storage = multer.diskStorage({
@@ -672,7 +687,7 @@ router.post("/getNetLog", (req, res) => {
         })
 });
 
-//获取日志数量
+//获取任务数量
 router.post("/getTaskCount", (req, res) => {
     let username = req.session.login.username
     let datrArr = req.body.dateArr
@@ -710,9 +725,9 @@ router.post("/getTask", (req, res) => {
     let datrArr = req.body.dateArr
     let fromDate = getTime("YYYY-MM-DD ", datrArr[0]) + "00:00:00.000"
     let toDate = getTime("YYYY-MM-DD ", datrArr[1]) + "23:59:59.000"
-    consolelog(2, req.body.station)
+    // consolelog(2, req.body.station)
     let station = req.body.station.replace("工位：", "")
-    consolelog(2, station)
+    // consolelog(2, station)
     // SELECT TOP 50 * FROM tablename where id not in (  select top 6 id from tablename)
     runSql(
         `SELECT TOP 50 * FROM dbo.t_PickListStation${station} WHERE fileTime BETWEEN '${fromDate}' AND '${toDate}' AND id not in (SELECT TOP ${from} id FROM dbo.t_PickListStation${station} WHERE fileTime BETWEEN '${fromDate}' AND '${toDate}')  ORDER BY PlanCurSeq`
@@ -721,6 +736,12 @@ router.post("/getTask", (req, res) => {
             writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询任务列表成功！`)
             writelogsql(1, `用户：${username} 查询任务列表成功！`)
             let result = data.recordset
+            result.forEach(item => {
+                item.Part_blgroup === driver ? item.Part_blgroup = "主司机" :
+                    item.Part_blgroup === codriver ? item.Part_blgroup = "副司机" :
+                        item.Part_blgroup === backseat ? item.Part_blgroup = "后座" :
+                            item.Part_blgroup === leanback ? item.Part_blgroup = "后靠" : "未知"
+            })
             res.send({
                 data: result,
                 code: 0,

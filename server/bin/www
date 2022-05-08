@@ -41,7 +41,7 @@ if (!haveLicense) {
     console.log("\033[40;32m|                                                               |\033[0m")
     console.log("\033[40;32m|                  \033[40;35m修改配置文件后,需重启此程序\033[40;32m                  |\033[0m")
     console.log("\033[40;32m|                                                               |\033[0m")
-    var update1 = console.draft("\033[40;32m|                       \033[40;36m测试程序: V 0.0.0\033[40;32m                       |\033[0m")
+    var update1 = console.draft("\033[40;32m|                       \033[40;36m程序版本: V 0.0.0\033[40;32m                       |\033[0m")
     console.log("\033[40;32m|                                                               |\033[0m")
     console.log("\033[40;32m|           \033[45;30m!!!!*** 服务运行中，请勿关闭此窗口 ***!!!!\033[40;32m          |\033[0m")
     console.log("\033[40;32m|           \033[45;30m!!!!*** 服务运行中，请勿关闭此窗口 ***!!!!\033[40;32m          |\033[0m")
@@ -54,9 +54,9 @@ if (!haveLicense) {
     console.log("=================================================================")
 
     var version = require('../package.json').version;
-    update1("\033[40;32m" + `|                       ` + '\033[40;36m测试程序: ' + `V ${version}` + '\033[40;32m                       |' + "\033[0m")
+    update1("\033[40;32m" + `|                       ` + '\033[40;36m程序版本: ' + `V ${version}` + '\033[40;32m                       |' + "\033[0m")
 
-    writelog("./log/SystemLog/SystemLog.log", 1, `测试程序: V ${version}`)
+    writelog("./log/SystemLog/SystemLog.log", 1, `程序版本: V ${version}`)
 
     var app = require('../app');
     var debug = require('debug')('server:server');

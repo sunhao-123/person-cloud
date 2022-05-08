@@ -2,7 +2,11 @@ var xml2js = require('xml2js');
 var fs = require('fs');
 var getTime = require('./gettime');
 
-for (let i = 0; i < 1000; i++) {
+let family = ["G08", "G2X"]
+let product = ["SITKKVL1", "SITKKVR1", "SITKKN2", "SITKKH1"]
+
+for (let i = 0; i < 1500; i++) {
+    let blgroup = product[getRandomInt(0, 3)]
     let xmljson = {
         Broadcast: {
             '$': { TimeStamp: getTime("YYYYMMDDHHmmssSSS"), ID: 140884 + i + 1 + "" },
@@ -13,19 +17,19 @@ for (let i = 0; i < 1000; i++) {
                         PlanPreSeq: (442665 + i) + "",
                         Plant: '88',
                         CarSet: 'L210225-15',
-                        Family: 'G2X',
+                        Family: family[getRandomInt(0, 1)],
                         VIN: 'M359200',
                         number: (65526411 + i + 1) + ""
                     },
                     Part: [
-                        { '$': { blgroup: 'SITKKVL1', LearId: '7433525-06', Qty: '1' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '7469671-08', Qty: '1' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '7469679-06', Qty: '1' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '7492933-10', Qty: '1' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '9108107-02', Qty: '1' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '9390113-02', Qty: '2' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '7441493-09', Qty: '2' } },
-                        { '$': { blgroup: 'SITKKVL1', LearId: '5A1EAD5-01', Qty: '1' } }
+                        { '$': { blgroup: blgroup, LearId: '7433525-06', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '7469671-08', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '7469679-06', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '7492933-10', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '9108107-02', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '9390113-02', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '7441493-09', Qty: getRandomInt(1, 3) } },
+                        { '$': { blgroup: blgroup, LearId: '5A1EAD5-01', Qty: getRandomInt(1, 3) } }
                     ]
                 }
             ]
@@ -41,4 +45,8 @@ for (let i = 0; i < 1000; i++) {
         if (!error) return;
         console.log("写入出错", error);
     });
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

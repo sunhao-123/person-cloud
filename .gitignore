@@ -6,3 +6,11 @@ create test xml file/node_modules/
 
 # Debug
 Update C#/Update/bin/Debug/
+
+# dist
+client/dist
+
+# exe
+register/*.exe
+server/www.exe
+server/Picking Service.exe

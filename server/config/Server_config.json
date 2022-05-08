@@ -2,5 +2,12 @@
   "port": "8081",
   "xmlFolder": "/XMLFiles",
   "copyXmlFolder": "/copyXMLFiles",
-  "logline": 11
+  "logline": 11,
+  "Driver": "SITKKVL1",
+  "Co-driver": "SITKKVR1",
+  "backseat": "SITKKN2",
+  "Lean-back": "SITKKH1",
+  "station1": "G2X-主+副",
+  "station2": "G2X-座+靠",
+  "station3": "G08-主+副+座+靠"
 }

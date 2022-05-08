@@ -19,13 +19,13 @@ const ParseXML = (filePath) => {
                 Plant: data.Order[0].$.Plant * 1,
                 CarSet: data.Order[0].$.CarSet,
                 Family: data.Order[0].$.Family,
+                blgroup: data.Order[0].Part[0].$.blgroup,
                 VIN: data.Order[0].$.VIN,
                 number: data.Order[0].$.number * 1,
                 Part: []
             }
             data.Order[0].Part.forEach(item => {
                 obj.Part.push({
-                    blgroup: item.$.blgroup,
                     LearId: item.$.LearId,
                     Qty: item.$.Qty * 1
                 })
