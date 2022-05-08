@@ -1,0 +1,8 @@
+# node_modules
+client/node_modules/
+server/node_modules/
+register/node_modules/
+create test xml file/node_modules/
+
+# Debug
+Update C#/Update/bin/Debug/
