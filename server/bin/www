@@ -1,0 +1,221 @@
+const fs = require('fs-extra');
+const path = require('path');
+
+let licensePath = path.join(process.cwd(), '/LICENSE')
+let haveLicense = fs.existsSync(licensePath)
+if (!haveLicense) {
+  console.log("\033[40;35m【ERROR】===> LICENSE不存在，软件禁止运行！请联系供应商解决！\033[0m")
+  pause()
+} else {
+  const { machineIdSync } = require('node-machine-id');
+  const { Base64 } = require('js-base64');
+  const crypto = require("crypto");
+  let machineId = machineIdSync();
+  let base64MachineId = Base64.encode(machineId)
+  let md5Base64MachineId = crypto.createHash("sha256").update(base64MachineId).digest("hex")
+  let licensedata = fs.readFileSync(licensePath, 'utf-8');
+  let license = licensedata.substring(0, 64);
+  let hexdate = licensedata.substring(licensedata.length - 11);
+  // console.log(hexdate)
+  let date = parseInt(hexdate, 16)
+  // let date = parseInt(hexdate, 10);
+  // console.log(date)
+  if (md5Base64MachineId !== license) {
+    console.log("\033[40;35m【ERROR】===> LICENSE信息错误，软件禁止运行！请联系供应商解决！\033[0m")
+    pause()
+  } else if (new Date().getTime() > date) {
+    console.log("\033[40;35m【ERROR】===> 软件授权已过期，禁止运行！请联系供应商解决！\033[0m")
+    pause()
+  } else {
+    const writelog = require('../Component/writelog');
+    writelog("./log/SystemLog/SystemLog.log", 1, `start`)
+    require('draftlog').into(console)
+    require("../Component/makeFolder");
+    const consolelog = require('../Component/consolelog');
+    const watchFolder = require("../Component/watchFolder")
+
+    console.log("\033[40;32m+===============================================================+\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    console.log("\033[40;32m|           \033[42;30m Picking By Light & Auto Calloff System \033[40;32m            |\033[0m")
+    console.log("\033[40;32m|                      \033[42;30m 后 台 服 务 程 序 \033[40;32m                      |\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    console.log("\033[40;32m|                  \033[40;35m修改配置文件后,需重启此程序\033[40;32m                  |\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    var update1 = console.draft("\033[40;32m|                       \033[40;36m测试程序: V 0.0.0\033[40;32m                       |\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    console.log("\033[40;32m|           \033[45;30m!!!!*** 服务运行中，请勿关闭此窗口 ***!!!!\033[40;32m          |\033[0m")
+    console.log("\033[40;32m|           \033[45;30m!!!!*** 服务运行中，请勿关闭此窗口 ***!!!!\033[40;32m          |\033[0m")
+    console.log("\033[40;32m|           \033[45;30m!!!!*** 服务运行中，请勿关闭此窗口 ***!!!!\033[40;32m          |\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    var update = console.draft("\033[40;32m|                     程序运行在: 0000 端口                     |\033[0m")
+    console.log("\033[40;32m|                                                               |\033[0m")
+    console.log("\033[40;32m+===============================================================+\033[0m")
+    console.log("Log: (全部日志见文件夹 " + `${path.join(process.cwd(), 'log')}` + "\\)")
+    console.log("=================================================================")
+
+    var version = require('../package.json').version;
+    update1("\033[40;32m" + `|                       ` + '\033[40;36m测试程序: ' + `V ${version}` + '\033[40;32m                       |' + "\033[0m")
+
+    writelog("./log/SystemLog/SystemLog.log", 1, `测试程序: V ${version}`)
+
+    var app = require('../app');
+    var debug = require('debug')('server:server');
+    var http = require('http');
+
+    /*
+     * Get port from environment and store in Express.
+     */
+
+    let config
+    let haveRedisConfig = fs.existsSync(path.join(process.cwd(), '/config/Server_config.json'))
+    if (haveRedisConfig) {
+      config = require(path.join(process.cwd(), '/config/Server_config.json'))
+      writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！`)
+    } else {
+      consolelog(3, "服务配置文件丢失，请联系供应商解决!")
+      writelog("./log/SystemLog/SystemLog.log", 3, `服务配置文件丢失，请联系供应商解决！`)
+    }
+
+    var configPort
+    try {
+      configPort = config.port;
+    } catch {
+      consolelog(2, "未找到服务配置文件，使用默认8081端口!")
+      writelog("./log/SystemLog/SystemLog.log", 2, `未找到服务配置文件，使用默认8081端口！`)
+      configPort = "8081";
+    }
+
+    var port = normalizePort(process.env.PORT || configPort);
+    app.set('port', port);
+
+    /**
+     * Create HTTP server.
+     */
+
+    var server = http.createServer(app);
+
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
+
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+    // console.log("process.stdout:",process.stdout.clearLine())
+    // console.log("process.stdout:",process.stdout.lin)
+
+
+    /**
+     * Normalize a port into a number, string, or false.
+     */
+
+    function normalizePort(val) {
+      var port = parseInt(val, 10);
+
+      if (isNaN(port)) {
+        // named pipe
+        return val;
+      }
+
+      if (port >= 0) {
+        // port number
+        return port;
+      }
+
+      return false;
+    }
+
+    /**
+     * Event listener for HTTP server "error" event.
+     */
+
+    function onError(error) {
+      if (error.syscall !== 'listen') {
+        consolelog(3, "服务运行错误！" + error)
+        writelog("./log/SystemLog/SystemLog.log", 3, `服务运行错误！${error}`)
+        consolelog(2, "5s后重新尝试监听。")
+        writelog("./log/SystemLog/SystemLog.log", 2, `5s后重新尝试监听。`)
+        setTimeout(function () {
+          server.listen(port);
+        }, 5000)
+        return
+        // throw error;
+      }
+
+      var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+      // handle specific listen errors with friendly messages
+      switch (error.code) {
+        case 'EACCES':
+          // console.error(bind + ' requires elevated privileges');
+          consolelog(3, bind + ' requires elevated privileges')
+          writelog("./log/SystemLog/SystemLog.log", 3, `服务运行错误！[EACCES] ${bind} requires elevated privileges`)
+          consolelog(2, "5s后重新尝试监听。")
+          writelog("./log/SystemLog/SystemLog.log", 2, `5s后重新尝试监听。`)
+          setTimeout(function () {
+            server.listen(port);
+          }, 5000)
+          return
+        // process.exit(1);
+        // break;
+        case 'EADDRINUSE':
+          // console.error(bind + ' is already in use');
+          consolelog(3, bind + ' is already in use')
+          writelog("./log/SystemLog/SystemLog.log", 3, `服务运行错误！[EADDRINUSE] ${bind} is already in use`)
+          consolelog(2, "5s后重新尝试监听。")
+          writelog("./log/SystemLog/SystemLog.log", 2, `5s后重新尝试监听。`)
+          setTimeout(function () {
+            server.listen(port);
+          }, 5000)
+          return
+        // process.exit(1);
+        // break;
+        default:
+          consolelog(3, `服务运行错误！未知错误：${error}`)
+          writelog("./log/SystemLog/SystemLog.log", 3, `服务运行错误！未知错误：${error}`)
+          consolelog(2, "5s后重新尝试监听。")
+          writelog("./log/SystemLog/SystemLog.log", 2, `5s后重新尝试监听。`)
+          setTimeout(function () {
+            server.listen(port);
+          }, 5000)
+          return
+        // throw error;
+      }
+    }
+
+    /**
+     * Event listener for HTTP server "listening" event.
+     */
+
+    function onListening() {
+      // console.log(`${port}端口已开放！`)
+      update("\033[40;32m" + `|                     程序运行在:` + '\033[42;30m ' + `${port}` + ' \033[40;32m端口                     |' + "\033[0m")
+      consolelog(1, `监听` + '\033[42;30m ' + `${port}` + ' \033[0m端口成功!')
+      writelog("./log/SystemLog/SystemLog.log", 1, `监听 ${port} 端口成功！`)
+      var addr = server.address();
+      var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+      debug('Listening on ' + bind);
+
+      let XMLFiles = path.join(process.cwd(), config.xmlFolder)
+      let copyXMLFiles = path.join(process.cwd(), config.copyXmlFolder)
+      watchFolder(XMLFiles, copyXMLFiles)
+    }
+
+  }
+}
+
+function pause() {
+  const readline = require('readline');
+  console.log("按任意键退出...")
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+
+  process.stdin.on('keypress', (str, key) => {
+    process.stdin.setRawMode(false);
+    process.exit(0)
+  })
+}

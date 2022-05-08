@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PBLData type="create" created="2022-04-14 12:20:43.856">
+  <order orderNum="10002396IIE"/>
+  <station stationName="工位1"/>
+  <boms name="运动布金条红前加四位灯1副司机">
+    <bom pn="4H0972081A"/>
+    <bom pn="4H0972847"/>
+    <bom pn="80A881326K4PK"/>
+    <bom pn="80A8813284PK"/>
+    <bom pn="80A8814584PK"/>
+    <bom pn="80A8817934PK"/>
+    <bom pn="80A882634C"/>
+    <bom pn="80D857755MNB"/>
+    <bom pn="TAB027145"/>
+  </boms>
+</PBLData>

@@ -1,0 +1,6 @@
+{
+  "port": "8081",
+  "xmlFolder": "/XMLFiles",
+  "copyXmlFolder": "/copyXMLFiles",
+  "logline": 11
+}

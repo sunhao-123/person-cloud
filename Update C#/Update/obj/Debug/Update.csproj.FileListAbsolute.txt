@@ -1,0 +1,12 @@
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.exe.config
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.exe
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.pdb
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.About.resources
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\WinShowDown.FrmMain.resources
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.Properties.Resources.resources
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.csproj.GenerateResource.cache
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.csproj.CoreCompileInputs.cache
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.csproj.CopyComplete
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.exe
+E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.pdb

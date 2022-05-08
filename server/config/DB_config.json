@@ -1,0 +1,16 @@
+{
+    "user": "picking",
+    "password": "picking123456",
+    "server": "127.0.0.1",
+    "port": 1433,
+    "database": "PickingTest",
+    "pool": {
+        "max": 10,
+        "min": 0,
+        "idleTimeoutMillis": 9999999999
+    },
+    "options": {
+        "encrypt": false,
+        "enableArithAbort": true
+    }
+}

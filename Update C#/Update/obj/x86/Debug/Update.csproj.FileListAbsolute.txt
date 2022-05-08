@@ -1,0 +1,44 @@
+E:\C#\下载进度\TestCSharpAbsoluteDetele\bin\Debug\TestCSharpAbsoluteDetele.exe
+E:\C#\下载进度\TestCSharpAbsoluteDetele\bin\Debug\TestCSharpAbsoluteDetele.pdb
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\WinShowDown.FrmMain.resources
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\TestCSharpAbsoluteDetele.Properties.Resources.resources
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\Update.csproj.GenerateResource.cache
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\Update.csproj.CoreCompileInputs.cache
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\TestCSharpAbsoluteDetele.exe
+E:\C#\下载进度\TestCSharpAbsoluteDetele\obj\x86\Debug\TestCSharpAbsoluteDetele.pdb
+E:\C#\下载进度\Update\obj\x86\Debug\WinShowDown.FrmMain.resources
+E:\C#\下载进度\Update\obj\x86\Debug\Update.csproj.GenerateResource.cache
+E:\C#\下载进度\Update\obj\x86\Debug\Update.csproj.CoreCompileInputs.cache
+E:\C#\下载进度\Update\bin\Debug\Update.exe.config
+E:\C#\下载进度\Update\bin\Debug\Update.exe
+E:\C#\下载进度\Update\bin\Debug\Update.pdb
+E:\C#\下载进度\Update\obj\x86\Debug\Update.csproj.AssemblyReference.cache
+E:\C#\下载进度\Update\obj\x86\Debug\Update.Properties.Resources.resources
+E:\C#\下载进度\Update\obj\x86\Debug\Update.exe
+E:\C#\下载进度\Update\obj\x86\Debug\Update.pdb
+E:\C#\WMS\Update C#\Update\bin\Debug\Update.exe.config
+E:\C#\WMS\Update C#\Update\bin\Debug\Update.exe
+E:\C#\WMS\Update C#\Update\bin\Debug\Update.pdb
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\WinShowDown.FrmMain.resources
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.Properties.Resources.resources
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.csproj.GenerateResource.cache
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.csproj.CoreCompileInputs.cache
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.exe
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.pdb
+E:\C#\WMS\Update C#\Update\bin\Debug\IrisSkin4.dll
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.csproj.CopyComplete
+E:\C#\WMS\Update C#\Update\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\C#\WMS\Update C#\Update\obj\x86\Debug\Update.csproj.AssemblyReference.cache
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.exe.config
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.exe
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\Update.pdb
+E:\LearJinbei_Picking\Update C#\Update\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\WinShowDown.FrmMain.resources
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.Properties.Resources.resources
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.csproj.GenerateResource.cache
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.csproj.CoreCompileInputs.cache
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.csproj.CopyComplete
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.exe
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.pdb
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.csproj.AssemblyReference.cache
+E:\LearJinbei_Picking\Update C#\Update\obj\x86\Debug\Update.About.resources
