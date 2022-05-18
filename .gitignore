@@ -14,3 +14,11 @@ client/dist
 register/*.exe
 server/www.exe
 server/Picking Service.exe
+
+#XML
+server/copyXMLFiles/
+server/FinishXmlFiles/
+server/XMLFiles/
+
+#log
+server/log/
