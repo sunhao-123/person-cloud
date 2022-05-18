@@ -252,11 +252,12 @@ router.get("/getBom", (req, res) => {
                             Plant: data.recordset[0].Plant,
                             CarSet: data.recordset[0].CarSet,
                             Family: data.recordset[0].Family,
+                            blgroup: data.recordset[0].Part_blgroup, 
                             Part: [],
                             VIN: data.recordset[0].VIN,
                             creatTime: data.recordset[0].creatTime
                         }
-                        getPart(data.recordset[0].Part_blgroup, data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
+                        getPart(data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
                             .then(data => {
                                 writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询订单号 ${order} 成功！`)
                                 writelogsql(1, `用户：${username} 查询订单号 ${order} 成功！`)
@@ -327,11 +328,12 @@ router.get("/getBom", (req, res) => {
                                                 Plant: data.recordset[0].Plant,
                                                 CarSet: data.recordset[0].CarSet,
                                                 Family: data.recordset[0].Family,
+                                                blgroup: data.recordset[0].Part_blgroup, 
                                                 Part: [],
                                                 VIN: data.recordset[0].VIN,
                                                 creatTime: data.recordset[0].creatTime
                                             }
-                                            getPart(data.recordset[0].Part_blgroup, data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
+                                            getPart(data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
                                                 .then(data => {
                                                     writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询订单号 ${order} 成功！`)
                                                     writelogsql(1, `用户：${username} 查询订单号 ${order} 成功！`)
@@ -422,7 +424,7 @@ function pn2name(pn, station) {
     })
 }
 
-async function getPart(Part_blgroup, Part_LearId, Part_Qty, station) {
+async function getPart(Part_LearId, Part_Qty, station) {
     let num = Part_LearId.length
     let partArr = []
     for (let i = 0; i < num; i++) {
@@ -430,7 +432,6 @@ async function getPart(Part_blgroup, Part_LearId, Part_Qty, station) {
         let name = obj.name
         let LabelID = obj.LabelID
         partArr.push({
-            blgroup: Part_blgroup,
             LearId: Part_LearId[i],
             name: name,
             LabelID: LabelID,

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Broadcast TimeStamp="20220518114604358" ID="140932">
+  <Order PlanCurSeq="442713" PlanPreSeq="442712" Plant="88" CarSet="L210225-15" Family="G2X" VIN="M359200" number="65526459">
+    <Part blgroup="SITKKH1" LearId="7433525-06" Qty="2"/>
+    <Part blgroup="SITKKH1" LearId="7469671-08" Qty="3"/>
+    <Part blgroup="SITKKH1" LearId="7469679-06" Qty="2"/>
+    <Part blgroup="SITKKH1" LearId="7492933-10" Qty="1"/>
+    <Part blgroup="SITKKH1" LearId="9108107-02" Qty="2"/>
+    <Part blgroup="SITKKH1" LearId="9390113-02" Qty="2"/>
+    <Part blgroup="SITKKH1" LearId="7441493-09" Qty="1"/>
+    <Part blgroup="SITKKH1" LearId="5A1EAD5-01" Qty="2"/>
+  </Order>
+</Broadcast>
