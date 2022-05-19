@@ -5,21 +5,21 @@ var getTime = require('./gettime');
 let family = ["G08", "G2X"]
 let product = ["SITKKVL1", "SITKKVR1", "SITKKN2", "SITKKH1"]
 
-for (let i = 0; i < 1500; i++) {
+for (let i = 0; i < 300; i++) {
     let blgroup = product[getRandomInt(0, 3)]
     let xmljson = {
         Broadcast: {
-            '$': { TimeStamp: getTime("YYYYMMDDHHmmssSSS"), ID: 140884 + i + 1 + "" },
+            '$': { TimeStamp: getTime("YYYYMMDDHHmmssSSS"), ID: 340884 + i + 1 + "" },
             Order: [
                 {
                     '$': {
-                        PlanCurSeq: (442665 + i + 1) + "",
-                        PlanPreSeq: (442665 + i) + "",
+                        PlanCurSeq: (842665 + i + 1) + "",
+                        PlanPreSeq: (842665 + i) + "",
                         Plant: '88',
                         CarSet: 'L210225-15',
                         Family: family[getRandomInt(0, 1)],
                         VIN: 'M359200',
-                        number: (65526411 + i + 1) + ""
+                        number: (65726411 + i + 1) + ""
                     },
                     Part: [
                         { '$': { blgroup: blgroup, LearId: '7433525-06', Qty: getRandomInt(1, 3) } },

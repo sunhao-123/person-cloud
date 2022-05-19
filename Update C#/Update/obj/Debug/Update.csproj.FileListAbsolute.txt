@@ -10,3 +10,16 @@ E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.csproj.CoreCompileInputs
 E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.csproj.CopyComplete
 E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.exe
 E:\LearJinbei_Picking\Update C#\Update\obj\Debug\Update.pdb
+E:\Picking-Service\Update C#\Update\bin\Debug\Update.exe.config
+E:\Picking-Service\Update C#\Update\bin\Debug\Update.exe
+E:\Picking-Service\Update C#\Update\bin\Debug\Update.pdb
+E:\Picking-Service\Update C#\Update\bin\Debug\ICSharpCode.SharpZipLib.dll
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.csproj.AssemblyReference.cache
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.About.resources
+E:\Picking-Service\Update C#\Update\obj\Debug\WinShowDown.FrmMain.resources
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.Properties.Resources.resources
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.csproj.GenerateResource.cache
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.csproj.CoreCompileInputs.cache
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.csproj.CopyComplete
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.exe
+E:\Picking-Service\Update C#\Update\obj\Debug\Update.pdb
