@@ -434,14 +434,14 @@ export default {
                   this.locationList[i].name =
                     item.PartName === null ? "" : item.PartName;
                   this.locationList[i].time =
-                    item.Threshold_Time * 1000 + 1648742400000;
+                    item.Threshold_Time * 1000 + 1577808000000;
 
                   this.oldLocationList[i].pn =
                     item.PartNum === null ? "" : item.PartNum;
                   this.oldLocationList[i].name =
                     item.PartName === null ? "" : item.PartName;
                   this.oldLocationList[i].time =
-                    item.Threshold_Time * 1000 + 1648742400000;
+                    item.Threshold_Time * 1000 + 1577808000000;
                 }
               });
             }
@@ -704,7 +704,7 @@ export default {
         .then(() => {
           let data = [];
           for (let i = 0; i < 16; i++) {
-            // console.log((new Date(this.locationList[i].time).getTime() - 1648742400000) / 1000);
+            // console.log((new Date(this.locationList[i].time).getTime() - 1577808000000) / 1000);
             // console.log(JSON.stringify(this.locationList[i]));
             // console.log(JSON.stringify(this.oldLocationList[i]));
             if (
@@ -720,9 +720,11 @@ export default {
                 PartName: this.trimStr(this.locationList[i].name),
                 Threshold_Time:
                   (new Date(this.locationList[i].time).getTime() -
-                    1648742400000) /
+                    1577808000000) /
                   1000,
               };
+              console.log(getTime("YYYY-MM-DD HH:mm:ss",this.locationList[i].time))
+              console.log(getTime("YYYY-MM-DD HH:mm:ss",obj.Threshold_Time))
               data.push(obj);
             }
           }
