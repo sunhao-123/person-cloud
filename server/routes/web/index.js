@@ -81,6 +81,7 @@ router.post("/getLocation", (req, res) => {
 //更新料架信息
 router.post("/updateLocation", (req, res) => {
     let data = req.body.data;
+    // console.log(data)
     updateSmallPartList(data)
         .then(updateResult => {
             // console.log(updateResult)
@@ -119,7 +120,7 @@ router.post("/updateLocation", (req, res) => {
 async function updateSmallPartList(dataArr) {
     let resultData = []
     for (let i = 0; i < dataArr.length; i++) {
-        // console.log(pnArr[i])
+        // console.log(dataArr[i])
         let data = await update(dataArr[i])
         resultData.push(data)
     };
@@ -133,6 +134,7 @@ async function updateSmallPartList(dataArr) {
 }
 
 function update(item) {
+    // console.log(item.Threshold_Time)
     return new Promise((resolve, reject) => {
         let sql = `UPDATE dbo.t_SmallPartList SET "PartNum" = '${item.PartNum}',"PartName" = '${item.PartName}',"Threshold_Time" = '${item.Threshold_Time}' WHERE LabelID = ${item.LabelID} AND Station = '${item.Station}'`
         // console.log(sql)
@@ -366,6 +368,7 @@ router.get("/getLocationExcel", (req, res) => {
                             for (let line = 2; line < allRoll; line++) {
                                 worksheet1.getCell(`B${line}`).value = station1Data[line - 2].PartNum
                                 worksheet1.getCell(`C${line}`).value = station1Data[line - 2].PartName
+                                // console.log(station1Data[line - 2].Threshold_Time)
                                 worksheet1.getCell(`D${line}`).value = formatTime(station1Data[line - 2].Threshold_Time * 1)
                                 worksheet2.getCell(`B${line}`).value = station2Data[line - 2].PartNum
                                 worksheet2.getCell(`C${line}`).value = station2Data[line - 2].PartName
@@ -417,11 +420,12 @@ router.get("/getLocationExcel", (req, res) => {
 
 function formatTime(time) {
     // 3600000
-    let s = Math.floor(time / 1000);
-    let hour = Math.floor(s / 3600)
-    let h = s % 3600
-    let minute = Math.floor(h / 60)
-    let second = h % 60
+    let newTime = new Date(time * 1000 - 1000 * 60 * 60 * 8);
+    // let s = Math.floor(time / 1000);
+    let hour = newTime.getHours();
+    let minute = newTime.getMinutes();
+    let second = newTime.getSeconds();
+    // let second = h % 60
     let strTime = bl(hour) + ":" + bl(minute) + ":" + bl(second)
     return strTime
 }
@@ -559,10 +563,9 @@ router.post("/uploadLocationFile", (req, res) => {
 
 function time2second(time) {
     let timeArr = time.split(":")
-    let hs = timeArr[0] * 3600
-    let ms = timeArr[1] * 60
-    let ss = timeArr[2] * 1
-    return (hs + ms + ss) * 1000
+    let date = new Date(`2000-01-01 ${timeArr[0]}:${timeArr[1]}:${timeArr[2]}`)
+    date.setHours(timeArr[0] * 1 + 8)
+    return date.getTime() / 1000;
 }
 
 //获取日志数量

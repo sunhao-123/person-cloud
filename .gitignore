@@ -22,3 +22,9 @@ server/XMLFiles/
 
 #log
 server/log/
+
+#public
+server/public/
+
+#uploadFile
+server/uploadFile/

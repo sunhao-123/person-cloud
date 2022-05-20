@@ -1,78 +1,35 @@
 <template>
   <div class="bigBox">
     <div class="chickLocation">
-      <el-select
-        size="small"
-        v-model="nowStation"
-        @change="handleClick"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in station"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+      <el-select size="small" v-model="nowStation" @change="handleClick" placeholder="请选择">
+        <el-option v-for="item in station" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
-      <el-select
-        size="small"
-        v-model="nowLocation"
-        @change="handleClick"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in location"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+      <el-select size="small" v-model="nowLocation" @change="handleClick" placeholder="请选择">
+        <el-option v-for="item in location" :key="item.value" :label="item.label" :value="item.value">
         </el-option>
       </el-select>
       <div class="saveBtn">
-        <el-button
-          type="primary"
-          round
-          size="small"
-          @click="handleSave"
-          :disabled="isSame"
-          >保存库位信息</el-button
-        >
+        <el-button type="primary" round size="small" @click="handleSave" :disabled="isSame">保存库位信息</el-button>
       </div>
       <div class="outputBtn">
-        <el-button type="primary" round size="small" @click="outputExcel"
-          >导出当前库位</el-button
-        >
+        <el-button type="primary" round size="small" @click="outputExcel">导出当前库位</el-button>
       </div>
       <div class="uploadBtn">
-        <el-button type="primary" round size="small" @click="uploadExcel"
-          >导入Excel</el-button
-        >
+        <el-button type="primary" round size="small" @click="uploadExcel">导入Excel</el-button>
       </div>
       <div class="downloadBtn">
-        <el-button type="primary" round size="small" @click="downloadExcel"
-          >下载导入模板</el-button
-        >
+        <el-button type="primary" round size="small" @click="downloadExcel">下载导入模板</el-button>
       </div>
     </div>
-    <fileUpload
-      ref="upFile"
-      :dialogVisible="ifShowUpload"
-      @closeUpload="closeUpload"
-    ></fileUpload>
+    <fileUpload ref="upFile" :dialogVisible="ifShowUpload" @closeUpload="closeUpload"></fileUpload>
     <div class="locationBox" :style="style">
-      <div
-        class="location"
-        v-for="item in locationList"
-        :key="item.locationNum"
-      >
+      <div class="location" v-for="item in locationList" :key="item.locationNum">
         <p>
-          <span style="margin-left: 5px"
-            >{{ nowLocation.replace("料架：", "库位: ")
-            }}{{ item.locationNum }}</span
-          ><span style="margin-left: 20px">{{
-            "标签ID: 0" + nowLocation.replace("料架：", "") + item.locationNum
-          }}</span>
+          <span style="margin-left: 5px">{{ nowLocation.replace("料架：", "库位: ")
+          }}{{ item.locationNum }}</span><span style="margin-left: 20px">{{
+    "标签ID: 0" + nowLocation.replace("料架：", "") + item.locationNum
+}}</span>
         </p>
         <div class="pnbox">
           <el-input size="small" v-model="item.pn" @input="ifSame()">
@@ -94,12 +51,7 @@
             <template slot="prepend">补货超时时间(秒)</template>
           </el-input> -->
           <div class="leftBox">超时时间</div>
-          <el-time-picker
-            size="small"
-            v-model="item.time"
-            placeholder="请选择时间"
-            @change="ifSame()"
-          >
+          <el-time-picker size="small" v-model="item.time" placeholder="请选择时间" @change="ifSame()">
           </el-time-picker>
         </div>
         <!-- <div class="btnBox">
@@ -409,7 +361,7 @@ export default {
     },
   },
   methods: {
-    changeTime(item) {},
+    changeTime(item) { },
     getLocation(station, location) {
       const loading = this.$loading({
         lock: true,
@@ -425,8 +377,7 @@ export default {
             for (let i = 0; i < 16; i++) {
               locationdata.forEach((item) => {
                 if (
-                  `0${this.nowLocation.replace("料架：", "")}${
-                    this.locationList[i].locationNum
+                  `0${this.nowLocation.replace("料架：", "")}${this.locationList[i].locationNum
                   }` === item.LabelID
                 ) {
                   this.locationList[i].pn =
@@ -712,19 +663,14 @@ export default {
               JSON.stringify(this.oldLocationList[i])
             ) {
               let obj = {
-                LabelID: `0${this.nowLocation.replace("料架：", "")}${
-                  this.locationList[i].locationNum
-                }`,
+                LabelID: `0${this.nowLocation.replace("料架：", "")}${this.locationList[i].locationNum}`,
                 Station: this.nowStation.replace("：", ""),
                 PartNum: this.trimStr(this.locationList[i].pn),
                 PartName: this.trimStr(this.locationList[i].name),
-                Threshold_Time:
-                  (new Date(this.locationList[i].time).getTime() -
-                    1577808000000) /
-                  1000,
+                Threshold_Time: this.getLocationTime(this.locationList[i].time),
               };
-              console.log(getTime("YYYY-MM-DD HH:mm:ss",this.locationList[i].time))
-              console.log(getTime("YYYY-MM-DD HH:mm:ss",obj.Threshold_Time))
+              // console.log(getTime("YYYY-MM-DD HH:mm:ss", this.locationList[i].time))
+              // console.log(getTime("YYYY-MM-DD HH:mm:ss", obj.Threshold_Time))
               data.push(obj);
             }
           }
@@ -788,7 +734,7 @@ export default {
           this.locationList[i].name !== this.oldLocationList[i].name ||
           this.locationList[i].pn !== this.oldLocationList[i].pn ||
           new Date(this.locationList[i].time).getTime() !==
-            new Date(this.oldLocationList[i].time).getTime()
+          new Date(this.oldLocationList[i].time).getTime()
         ) {
           result = false;
           break;
@@ -800,6 +746,18 @@ export default {
     trimStr(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
     },
+    getLocationTime(dateTime) {
+      let date = new Date(dateTime);
+      // console.log(date.getTime())
+      let Hours = date.getHours();
+      let minutes = date.getMinutes();
+      let seconds = date.getSeconds();
+      // console.log(Hours, minutes, seconds);
+      let newDateTime = new Date(`2000-01-01 ${Hours}:${minutes}:${seconds}`);
+      newDateTime.setHours(Hours + 8);
+      // console.log(newDateTime);
+      return newDateTime.getTime() / 1000;
+    }
   },
   mounted() {
     const that = this;
@@ -822,15 +780,18 @@ export default {
 <style lang="less" scoped>
 .btnBox {
   width: 100%;
+
   .shiftbtn {
     width: 40%;
     float: left;
   }
+
   .searchbox {
     width: 60%;
     float: right;
   }
 }
+
 .bigBox {
   .chickLocation {
     box-sizing: border-box;
@@ -838,10 +799,12 @@ export default {
     padding: 0 20px;
     width: 1460px;
     height: 32px;
+
     .el-select--small {
       width: 150px;
       margin-right: 30px;
     }
+
     .saveBtn,
     .downloadBtn,
     .outputBtn {
@@ -849,12 +812,14 @@ export default {
       width: 110px;
       margin-right: 20px;
     }
+
     .uploadBtn {
       display: inline-block;
       width: 90px;
       margin-right: 20px;
     }
   }
+
   .locationBox {
     margin: 20px auto;
     width: 1460px;
@@ -862,6 +827,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
     .location {
       padding: 10px;
       box-sizing: border-box;
@@ -871,11 +837,13 @@ export default {
       height: 160px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
       background-color: white;
+
       p,
       .pnbox,
       .namebox,
       .timebox {
         margin-bottom: 8px;
+
         .leftBox {
           display: inline-block;
           background-color: #f5f7fa;
@@ -892,15 +860,18 @@ export default {
           line-height: 30px;
           white-space: nowrap;
         }
+
         .el-date-editor--time {
           width: 227px;
           border-radius: 0 4px 4px 0;
+
           // top: 1px;
           /deep/.el-input__inner {
             border-radius: 0 4px 4px 0;
           }
         }
       }
+
       .btnBox {
         display: block;
         margin: 0 auto;
@@ -909,6 +880,7 @@ export default {
     }
   }
 }
+
 @media (max-width: 1750px) {
   .bigBox {
     .chickLocation {
@@ -917,10 +889,12 @@ export default {
       width: 1100px;
       height: 32px;
       padding: 0 20px;
+
       .el-select--small {
         width: 150px;
         margin-right: 30px;
       }
+
       .saveBtn,
       .downloadBtn,
       .outputBtn {
@@ -928,6 +902,7 @@ export default {
         width: 110px;
         margin-right: 20px;
       }
+
       .uploadBtn {
         display: inline-block;
         width: 90px;
@@ -942,6 +917,7 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
+
       .location {
         padding: 10px;
         box-sizing: border-box;
@@ -951,11 +927,13 @@ export default {
         height: 160px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
         background-color: white;
+
         p,
         .pnbox,
         .namebox,
         .timebox {
           margin-bottom: 8px;
+
           .leftBox {
             display: inline-block;
             background-color: #f5f7fa;
@@ -972,15 +950,18 @@ export default {
             line-height: 30px;
             white-space: nowrap;
           }
+
           .el-date-editor--time {
             width: 127px;
             border-radius: 0 4px 4px 0;
+
             // top: 1px;
             /deep/.el-input__inner {
               border-radius: 0 4px 4px 0;
             }
           }
         }
+
         .btnBox {
           display: block;
           margin: 0 auto;
