@@ -9,17 +9,17 @@ for (let i = 0; i < 300; i++) {
     let blgroup = product[getRandomInt(0, 3)]
     let xmljson = {
         Broadcast: {
-            '$': { TimeStamp: getTime("YYYYMMDDHHmmssSSS"), ID: 340884 + i + 1 + "" },
+            '$': { TimeStamp: getTime("YYYYMMDDHHmmssSSS"), ID: 540884 + i + 1 + "" },
             Order: [
                 {
                     '$': {
-                        PlanCurSeq: (842665 + i + 1) + "",
-                        PlanPreSeq: (842665 + i) + "",
+                        PlanCurSeq: (1042665 + i + 1) + "",
+                        PlanPreSeq: (1042665 + i) + "",
                         Plant: '88',
                         CarSet: 'L210225-15',
                         Family: family[getRandomInt(0, 1)],
                         VIN: 'M359200',
-                        number: (65726411 + i + 1) + ""
+                        number: (65926411 + i + 1) + ""
                     },
                     Part: [
                         { '$': { blgroup: blgroup, LearId: '7433525-06', Qty: getRandomInt(1, 3) } },

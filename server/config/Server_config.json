@@ -1,8 +1,9 @@
 {
   "port": "8081",
+  "websocketPort": "8082",
   "xmlFolder": "/XMLFiles",
   "copyXmlFolder": "/copyXMLFiles",
-  "logline": 11,
+  "logline": 30,
   "Driver": "SITKKVL1",
   "Co-driver": "SITKKVR1",
   "backseat": "SITKKN2",

@@ -78,6 +78,7 @@ router.post("/getLocation", (req, res) => {
         })
 });
 
+
 //更新料架信息
 router.post("/updateLocation", (req, res) => {
     let data = req.body.data;

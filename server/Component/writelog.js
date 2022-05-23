@@ -5,7 +5,6 @@ const consolelog = require('./consolelog')
 const writelog = (path, type, log) => {
     let newLogFilePath = path.replace(".log", `${getTime("_YYYYMMDD")}.log`)
 
-
     /* 路径按"/"拆分，截取出文件夹路径 Start */
     let patharr = path.split("/")
     patharr.pop()

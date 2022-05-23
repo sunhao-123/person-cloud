@@ -3,8 +3,8 @@ const runSql = require('../../db/datebase');
 const writelog = require('../../Component/writelog');
 const writelogsql = require('../../Component/writelogsql');
 const getTime = require('../../Component/gettime');
-const crypto = require("crypto");
 const consolelog = require("../../Component/consolelog");
+
 
 const router = express.Router();
 
@@ -93,35 +93,39 @@ router.get("/finishTask", (req, res) => {
                 if (data.rowsAffected[0] > 0) {
                     writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 订单 ${lastTask} 已完成！`)
                     writelogsql(1, `用户：${username} 订单 ${lastTask} 已完成！`)
-                    let sql1 = `SELECT TOP 1 "creatTime" FROM dbo.t_PickListStation${station} WHERE ([isFinish] = '${false}') ORDER BY creatTime DESC`
-                    runSql(sql1)
-                        .then(data1 => {
-                            if (data1) {
-                                writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 获取订单序列成功！`)
-                                writelogsql(1, `用户：${username} 获取订单序列成功！`)
-                                res.send({
-                                    code: 0,                       // 0: 状态OK   其他数字: 错误代码
-                                    message: "查询成功",            // 查询成功 或 查询失败【ERROR】  ： + 错误信息
-                                    createDateTime: getTime("YYYY-MM-DD HH:mm:ss.SSS", new Date(data1.recordset[0].creatTime).getTime() - (1000 * 60 * 60 * 8))
-                                })
-                            } else {
-                                writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 获取订单序列成功！`)
-                                writelogsql(1, `用户：${username} 获取订单序列成功！`)
-                                res.send({
-                                    code: 3,                       // 0: 状态OK   其他数字: 错误代码
-                                    message: "查询失败，未知错误！"
-                                })
-                            }
-                        })
-                        .catch(err => {
-                            writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 获取订单序列失败！${err}`)
-                            writelogsql(3, `用户：${username} 获取订单序列失败！${err}`)
-                            consolelog(3, `用户：${username} 获取订单序列失败！`)
-                            res.send({
-                                code: 4,                       // 0: 状态OK   其他数字: 错误代码
-                                message: "查询失败，" + err,            // 查询成功 或 查询失败【ERROR】  ： + 错误信息
-                            })
-                        })
+                    res.send({
+                        code: 0,                       // 0: 状态OK   其他数字: 错误代码
+                        message: `任务 ${lastTask} 已完成！`,            // 查询成功 或 查询失败【ERROR】  ： + 错误信息
+                    })
+                    // let sql1 = `SELECT TOP 1 "creatTime" FROM dbo.t_PickListStation${station} WHERE ([isFinish] = '${false}') ORDER BY creatTime DESC`
+                    // runSql(sql1)
+                    //     .then(data1 => {
+                    //         if (data1) {
+                    //             writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 获取订单序列成功！`)
+                    //             writelogsql(1, `用户：${username} 获取订单序列成功！`)
+                    //             res.send({
+                    //                 code: 0,                       // 0: 状态OK   其他数字: 错误代码
+                    //                 message: "查询成功",            // 查询成功 或 查询失败【ERROR】  ： + 错误信息
+                    //                 createDateTime: getTime("YYYY-MM-DD HH:mm:ss.SSS", new Date(data1.recordset[0].creatTime).getTime() - (1000 * 60 * 60 * 8))
+                    //             })
+                    //         } else {
+                    //             writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 获取订单序列成功！`)
+                    //             writelogsql(1, `用户：${username} 获取订单序列成功！`)
+                    //             res.send({
+                    //                 code: 3,                       // 0: 状态OK   其他数字: 错误代码
+                    //                 message: "查询失败，未知错误！"
+                    //             })
+                    //         }
+                    //     })
+                    //     .catch(err => {
+                    //         writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 获取订单序列失败！${err}`)
+                    //         writelogsql(3, `用户：${username} 获取订单序列失败！${err}`)
+                    //         consolelog(3, `用户：${username} 获取订单序列失败！`)
+                    //         res.send({
+                    //             code: 4,                       // 0: 状态OK   其他数字: 错误代码
+                    //             message: "查询失败，" + err,            // 查询成功 或 查询失败【ERROR】  ： + 错误信息
+                    //         })
+                    //     })
                 } else {
                     writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 关闭订单失败，已完成完成订单号 ${lastTask} 错误！`)
                     writelogsql(3, `用户：${username} 关闭订单失败，已完成完成订单号 ${lastTask} 错误！`)
@@ -252,7 +256,7 @@ router.get("/getBom", (req, res) => {
                             Plant: data.recordset[0].Plant,
                             CarSet: data.recordset[0].CarSet,
                             Family: data.recordset[0].Family,
-                            blgroup: data.recordset[0].Part_blgroup, 
+                            blgroup: data.recordset[0].Part_blgroup,
                             Part: [],
                             VIN: data.recordset[0].VIN,
                             creatTime: data.recordset[0].creatTime
@@ -328,7 +332,7 @@ router.get("/getBom", (req, res) => {
                                                 Plant: data.recordset[0].Plant,
                                                 CarSet: data.recordset[0].CarSet,
                                                 Family: data.recordset[0].Family,
-                                                blgroup: data.recordset[0].Part_blgroup, 
+                                                blgroup: data.recordset[0].Part_blgroup,
                                                 Part: [],
                                                 VIN: data.recordset[0].VIN,
                                                 creatTime: data.recordset[0].creatTime

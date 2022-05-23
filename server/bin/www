@@ -54,7 +54,7 @@ if (!haveLicense) {
     console.log("=================================================================")
 
     var version = require('../package.json').version;
-    update1("\033[40;32m" + `|                       ` + '\033[40;36m程序版本: ' + `V ${version}` + '\033[40;32m                       |' + "\033[0m")
+    update1("\033[40;32m" + `|                       ` + '\033[40;36m测试版本: ' + `V ${version}` + '\033[40;32m                       |' + "\033[0m")
 
     writelog("./log/SystemLog/SystemLog.log", 1, `程序版本: V ${version}`)
 
@@ -70,7 +70,7 @@ if (!haveLicense) {
     let haveRedisConfig = fs.existsSync(path.join(process.cwd(), '/config/Server_config.json'))
     if (haveRedisConfig) {
       config = require(path.join(process.cwd(), '/config/Server_config.json'))
-      writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！`)
+      writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！1`)
     } else {
       consolelog(3, "服务配置文件丢失，请联系供应商解决!")
       writelog("./log/SystemLog/SystemLog.log", 3, `服务配置文件丢失，请联系供应商解决！`)
@@ -192,7 +192,7 @@ if (!haveLicense) {
     function onListening() {
       // console.log(`${port}端口已开放！`)
       update("\033[40;32m" + `|                     程序运行在:` + '\033[42;30m ' + `${port}` + ' \033[40;32m端口                     |' + "\033[0m")
-      consolelog(1, `监听` + '\033[42;30m ' + `${port}` + ' \033[0m端口成功!')
+      consolelog(1, `服务运行在` + '\033[42;30m ' + `${port}` + ' \033[0m端口!')
       writelog("./log/SystemLog/SystemLog.log", 1, `监听 ${port} 端口成功！`)
       var addr = server.address();
       var bind = typeof addr === 'string'

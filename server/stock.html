@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>websocket</title>
+</head>
+<body>
+    <h1>Echo test</h1>
+    <input id="sendTxt" type="text"/>
+    <button id="sendBtn">发送</button>
+    <div id="recv"></div>
+    <script type="text/javascript">
+        var websocket = new WebSocket("ws://192.168.1.126:8082");
+        websocket.onopen = function(){
+            // console.log('websocket open');
+            document.getElementById('recv').innerHTML = 'Connected';
+            websocket.send("station1");
+        }
+
+        websocket.onclose = function(){
+            console.log('websocket close');
+        }
+
+        websocket.onmessage = function(event){
+            console.log(event.data);
+            document.getElementById('recv').innerHTML += "<br>" + event.data;
+        }
+
+        document.getElementById('sendBtn').onclick = function(){
+            var txt = document.getElementById('sendTxt').value;
+            websocket.send(txt);
+        }
+    </script>
+</body>
+</html>
+

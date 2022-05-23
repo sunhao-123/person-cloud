@@ -56,7 +56,6 @@ const watchFolder = (XMLFiles, copyXMLFiles) => {
         })
 }
 
-
 function fileIsBusy(dir, name) {
     fs.rename(`${dir}/${name}`, `${dir}/${name}`, (err, data) => {
         if (err) {
@@ -66,6 +65,5 @@ function fileIsBusy(dir, name) {
         }
     })
 }
-
 
 module.exports = watchFolder
