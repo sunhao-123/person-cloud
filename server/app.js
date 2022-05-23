@@ -4,11 +4,10 @@ var fs = require('fs-extra')
 var cookieParser = require('cookie-parser');
 var apiLogger = require('./Component/apiLogger');
 var path = require("path");
-const writelog = require('./Component/writelog');
-const getTime = require('./Component/gettime');
 const compression = require('compression');
 //App实例
 var app = express();
+app.disable('x-powered-by');
 app.use(compression());//在var app = express();之后添加
 //中间件设置
 //自动创建文件夹（fs-extra包功能，原生fs包没有此功能）
