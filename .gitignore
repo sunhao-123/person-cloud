@@ -8,7 +8,7 @@ create test xml file/node_modules/
 Update C#/Update/bin/Debug/
 
 # dist
-client/dist
+client/dist/
 
 # exe
 register/*.exe

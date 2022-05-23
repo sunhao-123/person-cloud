@@ -874,6 +874,19 @@ router.post("/getReprintList", (req, res) => {
         })
 });
 
-
+/* 获取服务端版本 */
+router.get("/getServiceVersion", (req, res) => {
+    var version = require('../../package.json').version;
+    if (version) {
+        writelog("./log/SystemLog/SystemLog.log", 1, `获取服务端版本号成功！${version}`)
+        writelogsql(1, `获取服务端版本号成功！${version}`)
+        res.send(version + ".0")
+    } else {
+        writelog("./log/SystemLog/SystemLog.log", 3, `获取服务端版本号错误，读取package.json文件失败！`)
+        consolelog(3, `获取服务端版本号错误，读取package.json文件失败！`)
+        writelogsql(3, `获取服务端版本号错误，读取package.json文件失败！`)
+        res.send("0.0.0.0")
+    }
+})
 
 module.exports = router;

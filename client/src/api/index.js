@@ -116,3 +116,13 @@ export function logout() {
 export function getVersion() {
   return axios.get("/update/getVersion");
 }
+
+/*退出登陆*/
+export function getServiceVersion() {
+  return axios.get("/web/getServiceVersion");
+}
+
+/*退出登陆*/
+export function getClientVersion() {
+  return axios.get("/update/getVersion");
+}
