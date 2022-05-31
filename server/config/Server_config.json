@@ -10,5 +10,6 @@
   "Lean-back": "SITKKH1",
   "station1": "G2X-主+副",
   "station2": "G2X-座+靠",
-  "station3": "G08-主+副+座+靠"
+  "station3": "G08-主+副+座+靠",
+  "storeroomIP": "127.0.0.1"
 }

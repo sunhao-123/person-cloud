@@ -21,20 +21,20 @@ const watchFolder = (XMLFiles, copyXMLFiles) => {
             let filename = path.basename(name)
             if (!fileIsBusy(dir, filename)) {
                 consolelog(1, `监听到新文件 ${name} ！`)
-                writelog("./log/SystemLog/SystemLog.log", 1, `监听到新文件 ${name} ！`)
+                writelog("./log/TaskLog/TaskLog.log", 1, `监听到新文件 ${name} ！`)
                 setTimeout(function () {
                     access(`${dir}/${filename}`, constants.F_OK, (err) => {
                         if (err) {
                             consolelog(3, `文件 ${name} 不存在！`)
-                            writelog("./log/SystemLog/SystemLog.log", 3, `文件 ${name} 不存在！`)
+                            writelog("./log/TaskLog/TaskLog.log", 3, `文件 ${name} 不存在！`)
                         } else {
                             let newFilePath = `${copyDir}/${filename}`.replace(/\//g, "\\")
                             fs.rename(`${dir}/${filename}`, newFilePath, (err, data) => {
                                 if (err) {
                                     consolelog(3, `文件 ${name} 移动失败！`)
-                                    writelog("./log/SystemLog/SystemLog.log", 3, `文件 ${name} 移动失败！` + err)
+                                    writelog("./log/TaskLog/TaskLog.log", 3, `文件 ${name} 移动失败！` + err)
                                 } else {
-                                    writelog("./log/SystemLog/SystemLog.log", 1, `文件 ${name} 已移动到 ${newFilePath} ！`)
+                                    writelog("./log/TaskLog/TaskLog.log", 1, `文件 ${name} 已移动到 ${newFilePath} ！`)
                                     ParseXML(newFilePath)
                                 }
                             })
@@ -44,7 +44,7 @@ const watchFolder = (XMLFiles, copyXMLFiles) => {
             }
         })
         .on('change', (name) => {
-            writelog("./log/SystemLog/SystemLog.log", 2, `文件 ${name} 已修改！`)
+            writelog("./log/TaskLog/TaskLog.log", 2, `文件 ${name} 已修改！`)
         })
         .on('error', (err) => {
             consolelog(3, "监听XML文件夹遇到错误！")

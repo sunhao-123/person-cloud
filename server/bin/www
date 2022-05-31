@@ -1,5 +1,26 @@
 const fs = require('fs-extra');
 const path = require('path');
+const consolelog = require('../Component/consolelog');
+const writelog = require('../Component/writelog');
+
+let config
+let haveRedisConfig = fs.existsSync(path.join(process.cwd(), '/config/Server_config.json'))
+if (haveRedisConfig) {
+  config = require(path.join(process.cwd(), '/config/Server_config.json'))
+  writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！1`)
+} else {
+  consolelog(3, "服务配置文件丢失，请联系供应商解决!")
+  writelog("./log/SystemLog/SystemLog.log", 3, `服务配置文件丢失，请联系供应商解决！`)
+}
+
+var storeroomIP
+try {
+  storeroomIP = config.storeroomIP;
+} catch {
+  consolelog(2, "未找到服务配置文件，立体库IP使用默认127.0.0.1!")
+  writelog("./log/SystemLog/SystemLog.log", 2, "未找到服务配置文件，立体库IP使用默认127.0.0.1!")
+  storeroomIP = "127.0.0.1";
+}
 
 let licensePath = path.join(process.cwd(), '/LICENSE')
 let haveLicense = fs.existsSync(licensePath)
@@ -27,11 +48,9 @@ if (!haveLicense) {
     console.log("\033[40;35m【ERROR】===> 软件授权已过期，禁止运行！请联系供应商解决！\033[0m")
     pause()
   } else {
-    const writelog = require('../Component/writelog');
     writelog("./log/SystemLog/SystemLog.log", 1, `start`)
     require('draftlog').into(console)
     require("../Component/makeFolder");
-    const consolelog = require('../Component/consolelog');
     const watchFolder = require("../Component/watchFolder")
 
     console.log("\033[40;32m+===============================================================+\033[0m")
@@ -65,16 +84,6 @@ if (!haveLicense) {
     /*
      * Get port from environment and store in Express.
      */
-
-    let config
-    let haveRedisConfig = fs.existsSync(path.join(process.cwd(), '/config/Server_config.json'))
-    if (haveRedisConfig) {
-      config = require(path.join(process.cwd(), '/config/Server_config.json'))
-      writelog("./log/SystemLog/SystemLog.log", 1, `Server_config 配置文件读取成功！1`)
-    } else {
-      consolelog(3, "服务配置文件丢失，请联系供应商解决!")
-      writelog("./log/SystemLog/SystemLog.log", 3, `服务配置文件丢失，请联系供应商解决！`)
-    }
 
     var configPort
     try {
@@ -219,3 +228,21 @@ function pause() {
     process.exit(0)
   })
 }
+
+const ping = require('pingman');
+
+setInterval(
+  async () => {
+    try {
+      const response = await ping(storeroomIP, { logToFile: false, bufferSize: 8, numberOfEchos: 1, timeout: 1, IPV4: true });
+      if (response.alive) {
+        response.TTL = response.output.match(/TTL=(\S*)\r\n/)[1] * 1;
+        delete response.output
+        writelog("./log/PingLog/PingLog.log", 1, `来自 ${response.numericHost} 的回复：字节=${response.bufferSize} 时间=${response.time}ms TTL=${response.TTL}`)
+      } else {
+        writelog("./log/PingLog/PingLog.log", 3, `${storeroomIP} 网络连接中断`)
+      }
+    } catch (error) {
+      writelog("./log/PingLog/PingLog.log", 3, `ping ${storeroomIP} 错误 ${error}`)
+    }
+  }, 5000)

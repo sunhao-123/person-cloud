@@ -35,36 +35,42 @@ let websocketConf = () => {
 
     var wsserver = ws.createServer(function (conn) {
         conn.on("text", function (str) {
+            writelog("./log/WebSocketLog/WebSocketLog.log", 1, "接收到" + conn.key + " 发送来的消息：" + str)
             if (/station/.test(str)) {
                 stationKey[str] = conn.key
                 conn.sendText(str.replace(/station/ig, "工位") + "连接成功！")
+                writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + str.replace(/station/ig, "工位") + "连接成功！")
                 consolelog(1, "ID: " + conn.key + " 已绑定到 " + str.replace(/station/ig, "工位") + "！")
-                writelog("./log/SystemLog/SystemLog.log", 1, "ID: " + conn.key + " 已绑定到 " + str.replace(/station/ig, "工位") + "！")
+                writelog("./log/WebSocketLog/WebSocketLog.log", 1, "ID: " + conn.key + " 已绑定到 " + str.replace(/station/ig, "工位") + "！")
                 let sql1 = `SELECT TOP 1 "creatTime" FROM dbo.t_PickListStation${str.replace(/station/ig, "")} WHERE ([isFinish] = '${false}') ORDER BY creatTime DESC`
                 runSql(sql1)
                     .then(data1 => {
                         if (data1.recordset.length > 0) {
-                            writelog("./log/SystemLog/SystemLog.log", 1, `获取更新时间成功！`)
+                            writelog("./log/SystemLog/SystemLog.log", 1, `获取任务更新时间成功！`)
                             writelogsql(1, `获取更新时间成功！`)
                             conn.sendText("最新任务时间：" + getTime("YYYY-MM-DD HH:mm:ss.SSS", new Date(data1.recordset[0].creatTime).getTime() - (1000 * 60 * 60 * 8)))
+                            writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "最新任务时间：" + getTime("YYYY-MM-DD HH:mm:ss.SSS", new Date(data1.recordset[0].creatTime).getTime() - (1000 * 60 * 60 * 8)))
                         } else {
                             writelog("./log/SystemLog/SystemLog.log", 1, `获取更新时间成功，但数据库中无任务！`)
                             writelogsql(1, `获取更新时间成功，但数据库中无任务！`)
                             conn.sendText("获取更新时间成功，但数据库中无任务！")
+                            writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "获取更新时间成功，但数据库中无任务！")
                         }
                     })
                     .catch(err => {
                         writelog("./log/SystemLog/SystemLog.log", 1, `获取更新时间失败！${err}`)
                         writelogsql(1, `获取更新时间失败！${err}`)
                         conn.sendText("获取更新时间失败！" + err)
+                        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "获取更新时间失败！" + err)
                     })
             } else if (/^心跳$/.test(str)) {
                 for (let i = 0; i < 3; i++) {
                     // let conn1 = wsserver.connections[i]
                     if (conn.key === stationKey["station" + (i + 1)]) {
+                        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "接收到心跳信号！")
                         conn.sendText("工位" + (i + 1) + "心跳OK")
-                        writelog("./log/SystemLog/SystemLog.log", 1, "工位" + (i + 1) + "心跳OK")
-                        writelogsql(1, "工位" + (i + 1) + "心跳OK")
+                        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "工位" + (i + 1) + "心跳OK")
+                        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "工位" + (i + 1) + "心跳OK")
                         break;
                     }
                 }
@@ -73,6 +79,7 @@ let websocketConf = () => {
                 consolelog(1, conn.key + " 发送：" + str)
                 writelog("./log/SystemLog/SystemLog.log", 1, "收到数据：" + conn.key + "  发送：" + str)
                 conn.sendText("后端收到数据：" + conn.key + "  send： " + str)
+                writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "后端收到数据：" + conn.key + "  send： " + str)
             }
         })
         conn.on("close", function (code, reason) {
@@ -81,8 +88,7 @@ let websocketConf = () => {
                 // let conn1 = wsserver.connections[i]
                 if (conn.key === stationKey["station" + (i + 1)]) {
                     consolelog(1, "工位" + (i + 1) + "断开")
-                    writelog("./log/SystemLog/SystemLog.log", 1, "工位" + (i + 1) + "断开")
-                    writelogsql(1, "工位" + (i + 1) + "断开")
+                    writelog("./log/WebSocketLog/WebSocketLog.log", 1, "工位" + (i + 1) + "断开")
                     break;
                 }
             }
@@ -90,8 +96,7 @@ let websocketConf = () => {
         conn.on("error", function (err) {
             if (err + "" !== "Error: read ECONNRESET") {
                 consolelog(3, "websocket error: " + err)
-                writelog("./log/SystemLog/SystemLog.log", 1, "websocket error: " + err)
-                writelogsql(1, "websocket error: " + err)
+                writelog("./log/WebSocketLog/WebSocketLog.log", 1, "websocket error: " + err)
             }
         })
     }).listen(websocketPort)
@@ -99,18 +104,20 @@ let websocketConf = () => {
     wsserver.on("listening", function () {
         consolelog(1, `websocket运行在` + '\033[42;30m ' + `${websocketPort}` + ' \033[0m端口！')
         writelog("./log/SystemLog/SystemLog.log", 1, `websocket运行在 ${websocketPort} 端口！`)
+        writelog("./log/WebSocketLog/WebSocketLog.log", 1, `websocket运行在 ${websocketPort} 端口！`)
     })
     wsserver.on("close", function () {
         consolelog(2, "websocket 已关闭！")
         writelog("./log/SystemLog/SystemLog.log", 2, "websocket 已关闭！")
+        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "websocket 已关闭！")
     })
     wsserver.on("error", function (errObj) {
         consolelog(3, "websocket 错误！" + errObj)
-        writelog("./log/SystemLog/SystemLog.log", 3, "websocket 错误！" + errObj)
+        writelog("./log/WebSocketLog/WebSocketLog.log", 3, "websocket 错误！" + errObj)
     })
     wsserver.on("connection", function (conn) {
         consolelog(1, "ID: " + conn.key + " 连入websocket成功！")
-        writelog("./log/SystemLog/SystemLog.log", 1, "ID: " + conn.key + " 连入websocket成功！")
+        writelog("./log/WebSocketLog/WebSocketLog.log", 1, "ID: " + conn.key + " 连入websocket成功！")
     })
 
     // let i = 0;

@@ -49,7 +49,7 @@ const XML2DB = (object) => {
         station = 3
     } else {
         consolelog(3, "识别到未知产线配置信息！")
-        writelog("./log/SystemLog/SystemLog.log", 3, "识别到未知产线配置信息！")
+        writelog("./log/TaskLog/TaskLog.log", 3, "识别到未知产线配置信息！")
     }
     if (station !== 0) {
         let selectsql = `SELECT COUNT(*) FROM dbo.t_PickListStation${station} WHERE orderNum = '${data.number}'`
@@ -64,24 +64,27 @@ const XML2DB = (object) => {
                     runSql(insertsql)
                         .then(sqlresult1 => {
                             if (sqlresult1.rowsAffected[0] >= 1) {
-                                writelog("./log/SystemLog/SystemLog.log", 1, `${data.number} 数据解析完成并写入数据库！`)
+                                writelog("./log/TaskLog/TaskLog.log", 1, `${data.number} 数据解析完成并写入数据库！`)
                                 for (let i = 0; i < 3; i++) {
                                     let conn = wsserver.connections[i]
                                     if (conn) {
                                         if (conn.key === stationKey["station" + station]) {
                                             conn.sendText("工位" + station + "数据更新：" + createDateTime)
-                                            writelog("./log/SystemLog/SystemLog.log", 1, "工位" + station + "数据更新：" + createDateTime)
+                                            writelog("./log/WebSocketLog/WebSocketLog.log", 1, "sendText To " + conn.key + " ---> " + "工位" + station + "数据更新：" + createDateTime)
+                                            writelog("./log/TaskLog/TaskLog.log", 1, "工位" + station + "数据更新：" + createDateTime)
                                             break;
                                         }
+                                    } else {
+                                        writelog("./log/SystemLog/SystemLog.log", 2, `工位${station}未链接，无法推送更新数据！`)
                                     }
                                 }
                             } else {
-                                writelog("./log/SystemLog/SystemLog.log", 3, `${data.number} 数据解析完成但写入数据库失败，写入数据量为0！`)
+                                writelog("./log/TaskLog/TaskLog.log", 3, `${data.number} 数据解析完成但写入数据库失败，写入数据量为0！`)
                                 consolelog(3, `${data.number} 数据解析完成但写入数据库失败，写入数据量为0！`)
                             }
                         })
                 } else {
-                    writelog("./log/SystemLog/SystemLog.log", 2, `${data.number} 数据解析完成但数据已存在！`)
+                    writelog("./log/TaskLog/TaskLog.log", 2, `${data.number} 数据解析完成但数据已存在！`)
                     consolelog(2, `${data.number} 数据解析完成但数据已存在！`)
                     // for (let i = 0; i < 3; i++) {
                     //     let conn = wsserver.connections[i]

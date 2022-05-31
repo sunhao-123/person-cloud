@@ -5,7 +5,6 @@ const writelogsql = require('../../Component/writelogsql');
 const getTime = require('../../Component/gettime');
 const consolelog = require("../../Component/consolelog");
 
-
 const router = express.Router();
 
 router.get("/AutoCalloff", (req, res) => {
@@ -206,9 +205,67 @@ router.get("/getThresholdTime", (req, res) => {
     }
 })
 
+router.get("/getPrintInfo", (req, res) => {
+    let passData = req.query
+    if (!passData.order || !passData.station || !passData.username) {
+        writelog("./log/SystemLog/SystemLog.log", 2, `访问 /api/getPrintInfo 接口但参数缺失！`)
+        writelogsql(2, `访问 /api/getPrintInfo 接口但参数缺失！`)
+        consolelog(2, `访问 /api/getPrintInfo 接口但参数缺失！`)
+        res.send({
+            code: 5,
+            msg: "查询失败，参数缺失！"
+        })
+    } else {
+        let order = passData.order
+        let username = passData.username
+        let station = passData.station
+        let sql = `SELECT "orderNum", "PlanCurSeq", "PlanPreSeq", "Plant", "CarSet", "Family", "Part_blgroup", "VIN", "creatTime" FROM dbo.t_PickListStation${station} WHERE ([orderNum] = '${order}')`
+        runSql(sql)
+            .then(data => {
+                if (data.rowsAffected[0] > 0) {
+                    let result = {
+                        orderNum: data.recordset[0].orderNum,
+                        PlanCurSeq: data.recordset[0].PlanCurSeq,
+                        PlanPreSeq: data.recordset[0].PlanPreSeq,
+                        Plant: data.recordset[0].Plant,
+                        CarSet: data.recordset[0].CarSet,
+                        Family: data.recordset[0].Family,
+                        blgroup: data.recordset[0].Part_blgroup,
+                        VIN: data.recordset[0].VIN,
+                        creatTime: data.recordset[0].creatTime
+                    }
+                    writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询订单号 ${order} 打印信息成功！`)
+                    writelogsql(1, `用户：${username} 查询订单号 ${order} 打印信息成功！`)
+                    res.send({
+                        code: 0,
+                        message: `获取订单号 ${order} 打印信息成功`,
+                        data: result
+                    })
+                } else {
+                    writelog("./log/SystemLog/SystemLog.log", 2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
+                    writelogsql(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
+                    consolelog(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
+                    res.send({
+                        code: 1,                       // 0: 状态OK   其他数字: 错误代码
+                        message: `查询失败，订单号不存在！`
+                    })
+                }
+            })
+            .catch(err => {
+                writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
+                writelogsql(3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
+                consolelog(3, `用户：${username} 查询订单号 ${order} 失败！`)
+                res.send({
+                    code: 4,                       // 0: 状态OK   其他数字: 错误代码
+                    message: `查询失败，服务器错误：${err}`
+                })
+            })
+    }
+})
+
 router.get("/getBom", (req, res) => {
     let passData = req.query
-    if (!passData.order || !passData.type || !passData.station || !passData.username) {
+    if (!passData.order || !passData.station || !passData.username) {
         writelog("./log/SystemLog/SystemLog.log", 2, `访问 /api/getBom 接口但参数缺失！`)
         writelogsql(2, `访问 /api/getBom 接口但参数缺失！`)
         consolelog(2, `访问 /api/getBom 接口但参数缺失！`)
@@ -218,48 +275,28 @@ router.get("/getBom", (req, res) => {
         })
     } else {
         let order = passData.order
-        let type = passData.type
         let username = passData.username
         let station = passData.station
-        if (type.toLowerCase() === "normal") {
-            let sql = `SELECT "orderNum", "XID", "PlanCurSeq", "PlanPreSeq", "Plant", "CarSet", "Family", "Part_blgroup", "Part_LearId", "Part_Qty", "VIN", "fileTime" FROM dbo.t_PickListStation${station} WHERE ([orderNum] = '${order}')`
-            runSql(sql)
-                .then(data => {
-                    if (data.rowsAffected[0] > 0) {
-                        // {
-                        //     TimeStamp: 20220413101820788,
-                        //     ID: 140884,
-                        //     PlanCurSeq: 442665,
-                        //     PlanPreSeq: 442664,
-                        //     Plant: 88,
-                        //     CarSet: 'L210225-15',
-                        //     Family: 'G2X',
-                        //     VIN: 'M359200',
-                        //     number: 65526411,
-                        //     Part: [
-                        //       { blgroup: 'SITKKVL1', LearId: '7433525-06', Qty: 1 },
-                        //       { blgroup: 'SITKKVL1', LearId: '7469671-08', Qty: 1 },
-                        //       { blgroup: 'SITKKVL1', LearId: '7469679-06', Qty: 1 },
-                        //       { blgroup: 'SITKKVL1', LearId: '7492933-10', Qty: 1 },
-                        //       { blgroup: 'SITKKVL1', LearId: '9108107-02', Qty: 1 },
-                        //       { blgroup: 'SITKKVL1', LearId: '9390113-02', Qty: 2 },
-                        //       { blgroup: 'SITKKVL1', LearId: '7441493-09', Qty: 2 },
-                        //       { blgroup: 'SITKKVL1', LearId: '5A1EAD5-01', Qty: 1 }
-                        //     ]
-                        //   }
-
+        let sql = `SELECT "PlanCurSeq", "PlanPreSeq", "CarSet", "Part_blgroup", "Part_LearId", "Part_Qty", "XID", "isFinish" FROM dbo.t_PickListStation${station} WHERE ([orderNum] = '${order}')`
+        runSql(sql)
+            .then(data => {
+                if (data.rowsAffected[0] > 0) {
+                    if (data.recordset[0].isFinish) {
+                        writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询订单号 ${order} 成功，但该任务已完成。`)
+                        writelogsql(1, `用户：${username} 查询订单号 ${order} 成功，但该任务已完成。`)
+                        // console.log(data)
+                        res.send({
+                            code: 5,
+                            message: `订单号 ${order} 已拣选完成，无需重复拣选。`
+                        })
+                    } else {
                         let result = {
-                            orderNum: data.recordset[0].orderNum,
-                            XID: data.recordset[0].XID,
                             PlanCurSeq: data.recordset[0].PlanCurSeq,
                             PlanPreSeq: data.recordset[0].PlanPreSeq,
-                            Plant: data.recordset[0].Plant,
                             CarSet: data.recordset[0].CarSet,
-                            Family: data.recordset[0].Family,
                             blgroup: data.recordset[0].Part_blgroup,
                             Part: [],
-                            VIN: data.recordset[0].VIN,
-                            creatTime: data.recordset[0].creatTime
+                            XID: data.recordset[0].XID,
                         }
                         getPart(data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
                             .then(data => {
@@ -282,123 +319,26 @@ router.get("/getBom", (req, res) => {
                                     message: `查询订单号 ${order} 失败，订单中小零件号查询错误：${err}`
                                 })
                             })
-                    } else {
-                        writelog("./log/SystemLog/SystemLog.log", 2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                        writelogsql(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                        consolelog(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                        res.send({
-                            code: 1,                       // 0: 状态OK   其他数字: 错误代码
-                            message: `查询失败，订单号不存在！`
-                        })
                     }
-                })
-                .catch(err => {
-                    writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
-                    writelogsql(3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
-                    consolelog(3, `用户：${username} 查询订单号 ${order} 失败！`)
+                } else {
+                    writelog("./log/SystemLog/SystemLog.log", 2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
+                    writelogsql(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
+                    consolelog(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
                     res.send({
-                        code: 4,                       // 0: 状态OK   其他数字: 错误代码
-                        message: `查询失败，服务器错误：${err}`
+                        code: 1,                       // 0: 状态OK   其他数字: 错误代码
+                        message: `查询失败，订单号不存在！`
                     })
-                })
-        } else if (type.toLowerCase() === "reprint") {
-            let sql = `SELECT TOP 1 ID, needRestart, isFinish FROM dbo.t_reprintListStation${station} WHERE [orderNum] = '${order}' AND [isFinish] = '${false}' ORDER BY ID DESC`
-            runSql(sql)
-                .then(data => {
-                    if (data.rowsAffected[0] > 0) {
-                        let needRestart = data.recordset[0].needRestart
-                        let isFinish = data.recordset[0].isFinish
-                        if (!needRestart) {
-                            res.send({
-                                code: 3,                       // 0: 状态OK   其他数字: 错误代码
-                                message: `此订单不需重新拣选！`
-                            })
-                        } else {
-                            if (isFinish) {
-                                res.send({
-                                    code: 3,                       // 0: 状态OK   其他数字: 错误代码
-                                    message: `此订单已重新拣选完成！`
-                                })
-                            } else {
-                                let sql = `SELECT "orderNum", "XID", "PlanCurSeq", "PlanPreSeq", "Plant", "CarSet", "Family", "Part_blgroup", "Part_LearId", "Part_Qty", "VIN", "fileTime" FROM dbo.t_PickListStation${station} WHERE ([orderNum] = '${order}')`
-                                runSql(sql)
-                                    .then(data => {
-                                        if (data.rowsAffected[0] > 0) {
-                                            let result = {
-                                                orderNum: data.recordset[0].orderNum,
-                                                XID: data.recordset[0].XID,
-                                                PlanCurSeq: data.recordset[0].PlanCurSeq,
-                                                PlanPreSeq: data.recordset[0].PlanPreSeq,
-                                                Plant: data.recordset[0].Plant,
-                                                CarSet: data.recordset[0].CarSet,
-                                                Family: data.recordset[0].Family,
-                                                blgroup: data.recordset[0].Part_blgroup,
-                                                Part: [],
-                                                VIN: data.recordset[0].VIN,
-                                                creatTime: data.recordset[0].creatTime
-                                            }
-                                            getPart(data.recordset[0].Part_LearId.split(","), data.recordset[0].Part_Qty.split(","), station)
-                                                .then(data => {
-                                                    writelog("./log/SystemLog/SystemLog.log", 1, `用户：${username} 查询订单号 ${order} 成功！`)
-                                                    writelogsql(1, `用户：${username} 查询订单号 ${order} 成功！`)
-                                                    // console.log(data)
-                                                    result.Part = data
-                                                    res.send({
-                                                        code: 0,
-                                                        message: `订单号 ${order} 查询成功`,
-                                                        data: result
-                                                    })
-                                                })
-                                                .catch(err => {
-                                                    writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败！订单中小零件号查询错误：${err}`)
-                                                    writelogsql(3, `用户：${username} 查询订单号 ${order} 失败！订单中小零件号查询错误：${err}`)
-                                                    consolelog(3, `用户：${username} 查询订单号 ${order} 失败！订单中小零件号查询失败`)
-                                                    res.send({
-                                                        code: 2,
-                                                        message: `查询订单号 ${order} 失败，订单中小零件号查询错误：${err}`
-                                                    })
-                                                })
-                                        }
-                                        else {
-                                            writelog("./log/SystemLog/SystemLog.log", 2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                                            writelogsql(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                                            consolelog(2, `用户：${username} 查询订单号 ${order} 失败！订单号不存在！`)
-                                            res.send({
-                                                code: 1,                       // 0: 状态OK   其他数字: 错误代码
-                                                message: `查询失败，订单号不存在！`
-                                            })
-                                        }
-                                    })
-                                    .catch(err => {
-                                        writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
-                                        writelogsql(3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
-                                        consolelog(3, `用户：${username} 查询订单号 ${order} 失败！`)
-                                        res.send({
-                                            code: 4,                       // 0: 状态OK   其他数字: 错误代码
-                                            message: `查询失败，服务器错误：${err}`
-                                        })
-                                    })
-                            }
-                        }
-                    } else {
-                        writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败，补打任务中无此单号！${order}`)
-                        writelogsql(3, `用户：${username} 查询订单号 ${order} 失败，补打任务中无此单号！${order}`)
-                        consolelog(3, `用户：${username} 查询订单号 ${order} 失败，补打任务中无此单号！${order}`)
-                        res.send({
-                            code: 3,                       // 0: 状态OK   其他数字: 错误代码
-                            message: `查询失败，补打任务中无此单号！${order}`
-                        })
-                    }
-                })
-        } else {
-            writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询BOM清单，类型(type=${type})参数错误！`)
-            writelogsql(3, `用户：${username} 查询BOM清单，类型(type=${type})参数错误!`)
-            consolelog(3, `用户：${username} 查询BOM清单，类型(type=${type})参数错误!`)
-            res.send({
-                code: 2,                       // 0: 状态OK   其他数字: 错误代码
-                message: `用户：${username} 查询BOM清单，类型(type=${type})参数错误！`           // 查询成功 或 查询失败【ERROR】  ： + 错误信息
+                }
             })
-        }
+            .catch(err => {
+                writelog("./log/SystemLog/SystemLog.log", 3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
+                writelogsql(3, `用户：${username} 查询订单号 ${order} 失败！服务器错误：${err}`)
+                consolelog(3, `用户：${username} 查询订单号 ${order} 失败！`)
+                res.send({
+                    code: 4,                       // 0: 状态OK   其他数字: 错误代码
+                    message: `查询失败，服务器错误：${err}`
+                })
+            })
     }
 })
 

@@ -110,7 +110,7 @@ router.get("/getAllVersion", (req, res) => {
                 } catch (err) {
                     writelog("./log/SystemLog/SystemLog.log", 3, `获取版本文件格式失败！${err}`)
                     consolelog(3, `获取版本文件格式失败！`)
-                    writelogsql(3, `获取版本文件格式失败！${err}`)
+                    writelogsql(3, `获取版本文件格式失败！${err.toString().replace(/\'/ig, " ")}`)
                     v.push(`${fileList[i]}-unk`)
                 }
             }

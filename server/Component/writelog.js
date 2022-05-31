@@ -37,7 +37,7 @@ const writelog = (path, type, log) => {
                     }
                 );
             } else {
-                let flag = type === 1 ? "【INFO】   " : type === 2 ? "【WARNING】" : type === 3 ? "【ERROR】  " : type === 4 ? "【NET】 " : "【UNKNOWN】"
+                let flag = type === 1 ? "【INFO】   " : type === 2 ? "【WARNING】" : type === 3 ? "【ERROR】  " : type === 4 ? "【NET】 " : type === 5 ? "【SQL】 " : "【UNKNOWN】"
                 fs.writeFile(
                     newLogFilePath,
                     getTime("【YYYY-MM-DD HH:mm:ss.SSS】") + flag + log + "\r\n",

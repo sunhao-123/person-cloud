@@ -70,6 +70,7 @@ sql.on('error', err => {
 })
 
 function runSql(sqltext) {
+    writelog("./log/SQLLog/SQLLog.log", 5, `${sqltext}`)
     return new Promise((resolve, reject) => {
         sql.query(sqltext, (err, recordset) => {
             if (err) {

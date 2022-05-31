@@ -45,7 +45,7 @@ const ParseXML = (filePath) => {
             XML2DB(obj)
             // let filename = path.basename(filePath)
             // consolelog(1, `${filename} 解析完成！`)
-            writelog("./log/SystemLog/SystemLog.log", 1, `文件 ${filePath} 解析完成！`)
+            writelog("./log/TaskLog/TaskLog.log", 1, `文件 ${filePath} 解析完成！`)
             // console.timeEnd(filePath)
         });
     });

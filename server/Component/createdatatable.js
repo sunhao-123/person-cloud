@@ -172,9 +172,6 @@ runSql("select count(*) from sysobjects where id = object_id('dbo.t_reprintListS
                 "ID            int               not null    identity(1,1)    primary key," +//设置为主键和自增长列，起始值为1，每次自增1
                 "orderNum      nvarchar(255)     not null," +
                 "creatTime     datetime          not null," +
-                "needRestart   bit               not null," +
-                "isFinish      bit               not null," +
-                "updateTime    datetime              null," +
                 ")"
             )
                 .then(() => {
@@ -200,9 +197,6 @@ runSql("select count(*) from sysobjects where id = object_id('dbo.t_reprintListS
                 "ID            int               not null    identity(1,1)    primary key," +//设置为主键和自增长列，起始值为1，每次自增1
                 "orderNum      nvarchar(255)     not null," +
                 "creatTime     datetime          not null," +
-                "needRestart   bit               not null," +
-                "isFinish      bit               not null," +
-                "updateTime    datetime              null," +
                 ")"
             )
                 .then(() => {
@@ -228,9 +222,6 @@ runSql("select count(*) from sysobjects where id = object_id('dbo.t_reprintListS
                 "ID            int               not null    identity(1,1)    primary key," +//设置为主键和自增长列，起始值为1，每次自增1
                 "orderNum      nvarchar(255)     not null," +
                 "creatTime     datetime          not null," +
-                "needRestart   bit               not null," +
-                "isFinish      bit               not null," +
-                "updateTime    datetime              null," +
                 ")"
             )
                 .then(() => {

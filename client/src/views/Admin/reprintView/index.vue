@@ -53,37 +53,14 @@
         width="50"
       >
       </el-table-column>
-      <el-table-column label="补打订单号" width="200">
+      <el-table-column label="补打订单号" width="250">
         <template slot-scope="scope">
           {{ scope.row.orderNum }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="210">
+      <el-table-column label="创建时间">
         <template slot-scope="scope">
           {{ formatTime(scope.row.creatTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="是否重新拣选" width="120">
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.needRestart ? null : 'info'"
-            disable-transitions
-            >{{ scope.row.needRestart ? "重新拣选" : "无需拣选" }}</el-tag
-          >
-        </template>
-      </el-table-column>
-      <el-table-column label="是否完成" width="120">
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.isFinish ? 'success' : 'warning'"
-            disable-transitions
-            >{{ scope.row.isFinish ? "已完成" : "未完成" }}</el-tag
-          >
-        </template>
-      </el-table-column>
-      <el-table-column label="完成时间" min-width="210">
-        <template slot-scope="scope">
-          {{ formatTime(scope.row.updateTime) }}
         </template>
       </el-table-column>
     </el-table>

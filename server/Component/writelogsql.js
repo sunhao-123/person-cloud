@@ -6,13 +6,13 @@ const consolelog = require('./consolelog');
 const writelogsql = (type, log) => {
     let sql = ""
     if (type === 1) {
-        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【INFO】${log.replace(/\'/, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
+        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【INFO】${log.replace(/\'/ig, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
     } else if (type === 2) {
-        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【WARNING】${log.replace(/\'/, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
+        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【WARNING】${log.replace(/\'/ig, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
     } else if (type === 3) {
-        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【ERROR】${log.replace(/\'/, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
+        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【ERROR】${log.replace(/\'/ig, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
     } else {
-        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【UNKNOWN】${log.replace(/\'/, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
+        sql = `INSERT INTO dbo.t_log ("cont", "creatTime") VALUES ('【UNKNOWN】${log.replace(/\'/ig, "\'\'")}', '${getTime("YYYY-MM-DD HH:mm:ss")}')`
     }
     runSql(sql)
         .then(() => {
